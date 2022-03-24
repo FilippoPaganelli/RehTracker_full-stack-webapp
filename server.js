@@ -26,7 +26,7 @@ app.use('/patients', patientsRouter);
 
 // Heroku stuff for locating frontend in production
 if (process.env.NODE_ENV === 'production'){
-    app.use(express.static('../frontend/build'));
+    app.use(express.static('frontend/build'));
 }
 
 // listening
