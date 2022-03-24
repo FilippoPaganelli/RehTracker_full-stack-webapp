@@ -11,7 +11,8 @@ app.use(cors());
 app.use(express.json());
 
 // DB
-const uri = process.env.ATLAS_DB_URI;
+//const uri = process.env.ATLAS_DB_URI;
+const uri = process.env.MONGO_DB;
 mongoose.connect(uri);
 
 const connection = mongoose.connection;
