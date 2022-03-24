@@ -12,6 +12,7 @@ app.use(express.json());
 
 // DB
 //const uri = process.env.ATLAS_DB_URI;
+// modified to make accessible from Heroku!
 const uri = process.env.MONGO_DB;
 mongoose.connect(uri);
 
