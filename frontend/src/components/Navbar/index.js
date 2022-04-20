@@ -27,12 +27,15 @@ const Navbar = () => {
           <NavLink to='/contact-us'>
             Contact Us
           </NavLink>
+          <NavLink to='/exercises'>
+            Exercises
+          </NavLink>
         </NavMenu>
         <NavBtn>
         <NavLink to='/sign-up'>
             Sign Up
           </NavLink>
-          <NavBtnLink to='/signin'>Sign In</NavBtnLink>
+          <NavBtnLink to='/sign-in'>Sign In</NavBtnLink>
         </NavBtn>
       </Nav>
     </>

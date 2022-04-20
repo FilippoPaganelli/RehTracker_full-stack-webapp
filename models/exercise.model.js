@@ -13,6 +13,10 @@ const exerciseSchema = new Schema({
     date:{
         type: Date,
         required: true
+    },
+    type:{
+        type: Number,
+        required: true
     }
 }, {
     timestamps: true,
