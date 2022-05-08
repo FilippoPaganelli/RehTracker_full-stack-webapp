@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useContext } from 'react';
-import AuthContext from '../contexts/AuthContext';
+import AuthContext, { API_URL } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 function SignOutBtn() {
@@ -8,7 +8,7 @@ function SignOutBtn() {
   const navigate = useNavigate();
 
   async function signOut() {
-    await axios.get('http://localhost:5000/api/auth/sign-out');
+    await axios.get(API_URL + '/api/auth/sign-out');
     await getSignedIn();
     navigate('/');
   }

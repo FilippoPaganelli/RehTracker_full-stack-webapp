@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { useState } from 'react';
 import axios from 'axios';
-import AuthContext from '../contexts/AuthContext';
+import AuthContext, { API_URL } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 function SignIn(props) {
@@ -15,7 +15,7 @@ function SignIn(props) {
 
     try {
       await axios
-        .post(`http://localhost:5000/api/auth/sign-in`, {
+        .post(API_URL + `/api/auth/sign-in`, {
           username: username,
           password: password,
         })

@@ -18,11 +18,15 @@ function AuthContextProvider(props) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ signedIn, getSignedIn }}>
+    <AuthContext.Provider value={{ signedIn, getSignedIn, API_URL }}>
       {props.children}
     </AuthContext.Provider>
   );
 }
 
+export const API_URL =
+  process.env.NODE_ENV === 'production'
+    ? 'https://rehtracker.herokuapp.com'
+    : 'http://localhost:5000';
 export default AuthContext;
 export { AuthContextProvider };
