@@ -1,27 +1,16 @@
-import React from 'react';
 import './App.css';
-import Navbar from './components/Navbar';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './pages';
-import About from './pages/about';
-import Services from './pages/services';
-import Contact from './pages/contact';
-import SignUp from './pages/sign-up';
-import ExercisesList from './pages/exercises';
+import React from 'react';
+import { AuthContextProvider } from './contexts/AuthContext';
+import axios from 'axios';
+import Router from './components/Router';
+
+axios.defaults.withCredentials = true;
 
 function App() {
   return (
-    <Router>
-      <Navbar />
-      <Routes>
-        <Route path='/' exact element={<Home/>} />
-        <Route path='/about' element={<About/>} />
-        <Route path='/services' element={<Services/>} />
-        <Route path='/contact-us' element={<Contact/>} />
-        <Route path='/exercises' element={<ExercisesList/>} />
-        <Route path='/sign-up' element={<SignUp/>} />
-      </Routes>
-    </Router>
+    <AuthContextProvider>
+      <Router />
+    </AuthContextProvider>
   );
 }
 

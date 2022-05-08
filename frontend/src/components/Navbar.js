@@ -1,9 +1,50 @@
 import { FaBars } from 'react-icons/fa';
 import { NavLink as Link } from 'react-router-dom';
 import styled from 'styled-components';
+import React, { useContext } from 'react';
+import Logo from '../images/LogoTransparent.png';
+import AuthContext from '../contexts/AuthContext';
+
+const Navbar = () => {
+  const { signedIn } = useContext(AuthContext);
+  return (
+    <div>
+      <Nav>
+        <NavLink to="/">
+          <img className="Logo" height="75" width="225" src={Logo} alt="Logo" />
+        </NavLink>
+        <Bars />
+
+        <NavMenu>
+          <NavLink to="/about">About Us</NavLink>
+          <NavLink to="/contact-us">Contact Us</NavLink>
+          {signedIn === true && <NavLink to="/stats">Statistics</NavLink>}
+        </NavMenu>
+
+        <NavMenu>
+          {signedIn === false && (
+            <>
+              <NavBtnLink to="/sign-up">Sign Up</NavBtnLink>
+              <NavBtnLink to="/sign-in">Sign In</NavBtnLink>
+            </>
+          )}
+          {signedIn === true && <NavLink to="/sign-out">Sign Out</NavLink>}
+        </NavMenu>
+      </Nav>
+    </div>
+  );
+};
+
+export default Navbar;
 
 export const Nav = styled.nav`
-  background-image:linear-gradient(to bottom left, #06D6A0,#06acd6, #437fce, #845EC2);
+  background-image: linear-gradient(
+    to bottom left,
+    #06d6a0,
+    #06acd6,
+    #437fce,
+    #845ec2
+  );
   height: 100px;
   display: flex;
   justify-content: space-between;
