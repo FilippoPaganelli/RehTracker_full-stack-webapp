@@ -3,13 +3,16 @@ import React, { createContext, useEffect, useState } from 'react';
 
 const AuthContext = createContext();
 
+const API_URL =
+  process.env.NODE_ENV === 'production'
+    ? 'https://rehtracker.herokuapp.com'
+    : 'http://localhost:5000';
+
 function AuthContextProvider(props) {
   const [signedIn, setSignedIn] = useState(false);
 
   async function getSignedIn() {
-    const signedInRes = await axios.get(
-      'http://localhost:5000/api/auth/signed-in'
-    );
+    const signedInRes = await axios.get(API_URL + '/api/auth/signed-in');
     setSignedIn(signedInRes.data);
   }
 
@@ -24,9 +27,6 @@ function AuthContextProvider(props) {
   );
 }
 
-export const API_URL =
-  process.env.NODE_ENV === 'production'
-    ? 'https://rehtracker.herokuapp.com'
-    : 'http://localhost:5000';
+export { API_URL };
 export default AuthContext;
 export { AuthContextProvider };
