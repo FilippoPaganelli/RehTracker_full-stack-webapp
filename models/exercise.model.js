@@ -1,26 +1,40 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const exerciseSchema = new Schema({
-    username:{
-        type: String,
-        require: true
+const exerciseSchema = new Schema(
+  {
+    username: {
+      type: String,
+      require: true,
     },
-    description:{
-        type: String,
-        required: true
+    timestamp: {
+      type: Date,
+      required: true,
+      default: new Date(),
     },
-    date:{
-        type: Date,
-        required: true
+    type: {
+      type: Number,
+      required: true,
     },
-    type:{
-        type: Number,
-        required: true
-    }
-}, {
+    currentSet: {
+      type: Number,
+      required: true,
+      default: 1,
+    },
+    repetitionInSet: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    therapyId: {
+      type: String,
+      required: true,
+    },
+  },
+  {
     timestamps: true,
-});
+  }
+);
 
 const Exercise = mongoose.model('Exercise', exerciseSchema);
 

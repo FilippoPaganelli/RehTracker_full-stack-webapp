@@ -34,11 +34,13 @@ const exercisesRouter = require('./routes/exercises');
 const patientsRouter = require('./routes/patients');
 const signupRouter = require('./routes/sign-up');
 const signinRouter = require('./routes/sign-in');
+const therapyRouter = require('./routes/therapy');
 
 app.use('/api/exercises', exercisesRouter);
 app.use('/api/patients', patientsRouter);
-app.use('/api/sign-up', signupRouter);
+app.use('/api/auth/sign-up', signupRouter);
 app.use('/api/auth', signinRouter);
+app.use('/api/therapy', therapyRouter);
 
 // Heroku constant for locating frontend in production
 if (process.env.NODE_ENV === 'production') {

@@ -5,7 +5,7 @@ import AuthContext, { API_URL } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 function SignIn(props) {
-  const { getSignedIn } = useContext(AuthContext);
+  const { getSignedIn, setGlobalUsername } = useContext(AuthContext);
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -25,13 +25,14 @@ function SignIn(props) {
             alert('Please, check your username or password...');
           } else {
             console.log('Sign in correct');
-            navigate('/');
+            setGlobalUsername(username);
+            navigate('/stats');
           }
         });
 
       getSignedIn();
     } catch (error) {
-      alert('Please, check your username/password combination');
+      alert('Please, check your username or password...');
     }
   }
 

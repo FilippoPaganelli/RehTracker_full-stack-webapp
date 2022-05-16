@@ -10,18 +10,48 @@ const API_URL =
 
 function AuthContextProvider(props) {
   const [signedIn, setSignedIn] = useState(false);
+  const [stats, setStats] = useState(undefined);
+  const [globalUsername, setGlobalUsername] = useState(undefined);
+  const [globalDate, setGlobalDate] = useState(Date());
 
   async function getSignedIn() {
     const signedInRes = await axios.get(API_URL + '/api/auth/signed-in');
+    if (!signedInRes.data) {
+      setGlobalUsername(undefined);
+    }
     setSignedIn(signedInRes.data);
   }
+
+  async function getStats() {
+    const statsData = await axios.post(API_URL + '/api/exercises/get', {
+      username: globalUsername,
+      date: globalDate,
+    });
+    setStats(statsData.data);
+  }
+
+  // useEffect(() => {
+  //   console.log(globalUsername);
+  // }, [globalUsername]);
 
   useEffect(() => {
     getSignedIn();
   }, []);
 
+  // useEffect(() => {
+  //   getStats();
+  // }, []);
+
   return (
-    <AuthContext.Provider value={{ signedIn, getSignedIn, API_URL }}>
+    <AuthContext.Provider
+      value={{
+        signedIn,
+        getSignedIn,
+        setGlobalUsername,
+        setGlobalDate,
+        API_URL,
+      }}
+    >
       {props.children}
     </AuthContext.Provider>
   );

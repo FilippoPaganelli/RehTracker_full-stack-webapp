@@ -1,5 +1,4 @@
 const router = require('express').Router();
-const bcrypt = require('bcrypt');
 
 let Patient = require('../models/patient.model');
 
@@ -7,28 +6,31 @@ let Patient = require('../models/patient.model');
 router.route('/').post((req, res) => {
   const username = req.body.username;
   const password = req.body.password;
+  const fullName = req.body.fullName;
+  const age = req.body.age;
 
-  Patient.findOne({ username: req.body.username }, (err, patient) => {
+  Patient.findOne({ username: username }, (err, patient) => {
     if (err) {
-      console.log(err);
-      res.json(err);
+      res.json({ error: err });
     } else {
       if (patient == null) {
         const patient = Patient({
-          username: req.body.username,
-          password: req.body.password,
+          username: username,
+          password: password,
+          fullName: fullName,
+          age: age,
         });
-        patient.save().then((err) => {
-          if (err) {
-            console.log(err);
-            res.json(err);
-          } else {
-            console.log(patient);
-            res.json('Patient added!');
-          }
-        });
+
+        patient
+          .save()
+          .then((pat) => {
+            res.send(pat);
+          })
+          .catch((err) => {
+            res.json({ error: 'Saving to DB failed' });
+          });
       } else {
-        res.json('Username already used!');
+        res.json({ error: 'Username already taken' });
       }
     }
   });

@@ -22,6 +22,7 @@
     "express-session": "^1.17.2",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.2.8",
+    "randomcolor": "^0.6.2",
     "react-donut-chart": "^1.2.2",
     "recharts": "^2.1.9"
   },

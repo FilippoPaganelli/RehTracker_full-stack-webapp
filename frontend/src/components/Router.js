@@ -21,7 +21,9 @@ function Router(props) {
           {signedIn === false ? (
             <>
               <Route exact path="/sign-in" element={<SignIn />} />
-              <Route exact path="/sign-up" element={<SignUp />} />
+              {/* NO SIGN-UP ROUTE FOR NOW
+              <Route exact path="/sign-up" element={<SignUp />} /> */}
+              <Route exact path="/stats" element={<Statistics />} />
             </>
           ) : (
             <>

@@ -9,7 +9,7 @@ const Navbar = () => {
   const { signedIn } = useContext(AuthContext);
   return (
     <div>
-      <Nav>
+      <Nav style={{ marginTop: -10, marginLeft: -10, marginRight: -10 }}>
         <NavLink to="/">
           <img className="Logo" height="75" width="225" src={Logo} alt="Logo" />
         </NavLink>
@@ -24,11 +24,13 @@ const Navbar = () => {
         <NavMenu>
           {signedIn === false && (
             <>
-              <NavBtnLink to="/sign-up">Sign Up</NavBtnLink>
+              {/* <NavBtnLink to="/sign-up">Sign Up</NavBtnLink> */}
               <NavBtnLink to="/sign-in">Sign In</NavBtnLink>
             </>
           )}
-          {signedIn === true && <NavLink to="/sign-out">Sign Out</NavLink>}
+          {signedIn === true && (
+            <NavBtnLink to="/sign-out">Sign Out</NavBtnLink>
+          )}
         </NavMenu>
       </Nav>
     </div>
@@ -39,7 +41,7 @@ export default Navbar;
 
 export const Nav = styled.nav`
   background-image: linear-gradient(
-    to bottom left,
+    to bottom right,
     #06d6a0,
     #06acd6,
     #437fce,
@@ -85,7 +87,7 @@ export const Bars = styled(FaBars)`
 export const NavMenu = styled.div`
   display: flex;
   align-items: center;
-  margin-right: -24px;
+  margin-right: 0;
   width: 100vw;
   white-space: nowrap;
 
@@ -118,7 +120,7 @@ export const NavBtnLink = styled(Link)`
   text-decoration: none;
 
   /* Second Nav */
-  margin-left: 24px;
+  margin-left: 0;
 
   &:hover {
     transition: all 0.2s ease-in-out;
