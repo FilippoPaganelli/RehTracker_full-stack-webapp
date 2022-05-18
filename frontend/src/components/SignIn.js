@@ -25,12 +25,11 @@ function SignIn(props) {
             alert('Please, check your username or password...');
           } else {
             console.log('Sign in correct');
+            getSignedIn();
             setGlobalUsername(username);
             navigate('/stats');
           }
         });
-
-      getSignedIn();
     } catch (error) {
       alert('Please, check your username or password...');
     }

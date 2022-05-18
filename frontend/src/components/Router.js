@@ -2,7 +2,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './Home';
 import Navbar from './Navbar';
 import SignIn from './SignIn';
-import SignUp from './SignUp';
 import SignOutBtn from './SignOutBtn';
 import Statistics from './stats/Statistics';
 import React, { useContext } from 'react';
@@ -23,7 +22,7 @@ function Router(props) {
               <Route exact path="/sign-in" element={<SignIn />} />
               {/* NO SIGN-UP ROUTE FOR NOW
               <Route exact path="/sign-up" element={<SignUp />} /> */}
-              <Route exact path="/stats" element={<Statistics />} />
+              {/* <Route exact path="/stats" element={<Statistics />} /> */}
             </>
           ) : (
             <>

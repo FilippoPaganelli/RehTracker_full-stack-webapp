@@ -1,9 +1,6 @@
 import axios from 'axios';
-import React, { useContext } from 'react';
-import AuthContext, {
-  API_URL,
-  setGlobalUsername,
-} from '../contexts/AuthContext';
+import React, { useContext, useEffect } from 'react';
+import AuthContext, { API_URL } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 function SignOutBtn() {
@@ -11,13 +8,19 @@ function SignOutBtn() {
   const navigate = useNavigate();
 
   async function signOut() {
-    await axios.get(API_URL + '/api/auth/sign-out');
-    await getSignedIn();
+    await axios.get(API_URL + '/api/auth/sign-out', { withCredentials: true });
+    await getSignedIn(true);
     setGlobalUsername(undefined);
     navigate('/');
   }
 
-  return <button onClick={signOut}>Sign Out</button>;
+  useEffect(() => {
+    if (window.confirm('Are you sure you want to sign out?')) {
+      signOut();
+    } else navigate('/stats');
+  }, []);
+
+  return null;
 }
 
 export default SignOutBtn;

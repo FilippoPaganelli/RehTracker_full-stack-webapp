@@ -12,43 +12,52 @@ function AuthContextProvider(props) {
   const [signedIn, setSignedIn] = useState(false);
   const [stats, setStats] = useState(undefined);
   const [globalUsername, setGlobalUsername] = useState(undefined);
-  const [globalDate, setGlobalDate] = useState(Date());
+  const [globalDate, setGlobalDate] = useState(undefined);
 
-  async function getSignedIn() {
-    const signedInRes = await axios.get(API_URL + '/api/auth/signed-in');
-    if (!signedInRes.data) {
-      setGlobalUsername(undefined);
+  async function getSignedIn(fromSignOut) {
+    const prevSignedIn = signedIn;
+    const signedInRes = await axios.get(API_URL + '/api/auth/signed-in', {
+      withCredentials: true,
+    });
+    if (!fromSignOut && prevSignedIn && !signedInRes.data) {
+      alert('Authorisation timeout, please sign in again...');
     }
     setSignedIn(signedInRes.data);
   }
 
   async function getStats() {
-    const statsData = await axios.post(API_URL + '/api/exercises/get', {
-      username: globalUsername,
-      date: globalDate,
-    });
+    const statsData = await axios.post(
+      API_URL + '/api/exercises/get',
+      {
+        username: globalUsername,
+        date: globalDate,
+      },
+      { withCredentials: true }
+    );
     setStats(statsData.data);
   }
 
-  // useEffect(() => {
-  //   console.log(globalUsername);
-  // }, [globalUsername]);
+  useEffect(() => {
+    getStats();
+    // eslint-disable-next-line
+  }, [globalDate]);
 
   useEffect(() => {
     getSignedIn();
-  }, []);
-
-  // useEffect(() => {
-  //   getStats();
-  // }, []);
+    // eslint-disable-next-line
+  }, [globalDate]);
 
   return (
     <AuthContext.Provider
       value={{
+        stats,
         signedIn,
         getSignedIn,
+        globalDate,
+        globalUsername,
         setGlobalUsername,
         setGlobalDate,
+        getStats,
         API_URL,
       }}
     >

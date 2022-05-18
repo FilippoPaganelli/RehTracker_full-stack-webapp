@@ -1,5 +1,4 @@
 const router = require('express').Router();
-
 const auth = require('../middleware/authentication');
 let Patient = require('../models/patient.model');
 

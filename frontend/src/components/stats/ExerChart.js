@@ -1,48 +1,83 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Pie, PieChart } from 'recharts';
-import randomColor from 'randomcolor';
+import AuthContext from '../../contexts/AuthContext';
 import data from './offlineData';
 
 const reactDonutChartInnerRadius = 62.5;
 const reactDonutChartOuterRadius = 125;
 const rotateAngleToLookBetter = -270;
-let amoutOfTimes = '1/3';
 const width = 350;
 const height = 350;
 
 function ExerChart(props) {
-  const number = props.number;
-  const [state, setState] = useState();
-  const [key, setKey] = useState(1);
-
-  function IncrementFill() {
-    const newData = data;
-    newData[9].fill = randomColor();
-    setState(newData);
-    setKey(key + 1);
-  }
+  const index = props.index;
+  const [incrementableKey, setKey] = useState(index + 1);
+  const { stats } = useContext(AuthContext);
+  const [repetitions, setRepetitions] = useState();
+  const [sets, setSets] = useState({ done: 0, total: 0 });
+  const [type, setType] = useState('-');
 
   useEffect(() => {
-    console.log('first data set');
-    setState(data);
+    setRepetitions(data);
+    setKey(incrementableKey + 1);
+    // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    setKey(incrementableKey + 1);
+    setRepetitions(data);
+    const graphStats = _preprocessData();
+
+    setSets(graphStats[0]);
+    setRepetitions(graphStats[1]);
+    setType(graphStats[2]);
+  }, [stats]);
+
+  function _preprocessData() {
+    const data = stats[index];
+    const sets = { done: data.exercise.currentSet, total: data.sets };
+    const repsDone = Number.parseFloat(data.exercise.repetitionInSet);
+    const repsTotal = Number.parseFloat(data.reps);
+    const type = data.type;
+
+    // prepare now the list of 'repetitions' for the graph
+    const reps = [];
+    const fraction = repsDone / repsTotal;
+    for (let index = 1; index <= repsTotal; index++) {
+      reps.push({
+        id: index,
+        fill: index <= repsDone ? '#06acd6' : '#77777766',
+        value: fraction * 100,
+      });
+    }
+
+    return [sets, reps, type];
+  }
 
   return (
     <div>
-      <button onClick={IncrementFill}>Click to fill</button>
-      <PieChart key={key} width={width} height={height}>
+      <PieChart key={incrementableKey} width={width} height={height}>
         <text
           x={width / 2}
-          y={height / 2}
+          y={height / 2 + 15}
           textAnchor="middle"
           dominantBaseline="middle"
-          fontSize={30}
+          fontSize={16}
         >
-          {amoutOfTimes}
+          Type: {type}
+        </text>
+        <text
+          x={width / 2}
+          y={height / 2 - 15}
+          textAnchor="middle"
+          dominantBaseline="middle"
+          fontSize={27}
+        >
+          {sets.done + '/' + sets.total}
         </text>
         <Pie
           animationDuration={700}
-          data={state}
+          data={repetitions}
           outerRadius={reactDonutChartOuterRadius}
           innerRadius={reactDonutChartInnerRadius}
           startAngle={rotateAngleToLookBetter}
@@ -50,26 +85,6 @@ function ExerChart(props) {
           cy="50%"
           fill="#8884d8"
           dataKey="value"
-          // label={({ cx, cy, midAngle, innerRadius, outerRadius, index }) => {
-          //   const RADIAN = Math.PI / 180;
-          //   // eslint-disable-next-line
-          //   const radius = 25 + innerRadius + (outerRadius - innerRadius);
-          //   // eslint-disable-next-line
-          //   const x = cx + radius * Math.cos(-midAngle * RADIAN);
-          //   // eslint-disable-next-line
-          //   const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-          //   return (
-          //     <text
-          //       x={x}
-          //       y={y}
-          //       textAnchor={x > cx ? 'start' : 'end'}
-          //       dominantBaseline="central"
-          //     >
-          //       {state[index].name}
-          //     </text>
-          //   );
-          // }}
         />
       </PieChart>
     </div>

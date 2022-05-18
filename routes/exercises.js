@@ -1,11 +1,12 @@
 const router = require('express').Router();
+const auth = require('../middleware/authentication');
 let Exercise = require('../models/exercise.model');
 let Patient = require('../models/patient.model');
 let TherapyPhase = require('../models/therapyPhase.model');
 const { DESCRIPTIONS } = require('../models/exercisesInfo');
 
 // RETRIEVE EX.S BY USERNAME & DATE
-router.route('/get').post((req, res) => {
+router.route('/get').post(auth, (req, res) => {
   const username = req.body.username;
   const date = Date.parse(req.body.date);
 
@@ -22,7 +23,7 @@ router.route('/get').post((req, res) => {
         res.json({ error: err });
       } else {
         if (therapy == null || therapy.length == 0) {
-          res.json('No therapy found');
+          res.json({ error: 'No therapy found' });
         } else {
           const types = therapy[0].exerciseTypes;
           const stats = DESCRIPTIONS.filter((el) => types.includes(el.type));
@@ -54,7 +55,7 @@ router.route('/get').post((req, res) => {
 });
 
 // ADD ONE
-router.route('/').post((req, res) => {
+router.route('/').post(auth, (req, res) => {
   const username = req.body.username;
   const timestamp = Date.parse(req.body.timestamp);
   const type = parseInt(req.body.type);

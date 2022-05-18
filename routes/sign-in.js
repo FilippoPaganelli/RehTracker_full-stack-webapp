@@ -2,7 +2,7 @@ const router = require('express').Router();
 const jwt = require('jsonwebtoken');
 
 let Patient = require('../models/patient.model');
-const TOKEN_DURATION = '30s';
+const TOKEN_DURATION = '600s';
 
 // SIGNEDIN
 router.route('/signed-in').get((req, res) => {
@@ -11,8 +11,8 @@ router.route('/signed-in').get((req, res) => {
     if (!token || token === '') {
       res.json(false);
     } else {
+      // timeout logic is inside of the token from its generation
       jwt.verify(token, process.env.SESSION_SECRET);
-      // ADD SOME TIMEOUT LOGIC HERE! ---------------------------------------
       res.json(true);
     }
   } catch (error) {
