@@ -1,13 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Pie, PieChart } from 'recharts';
 import AuthContext from '../../contexts/AuthContext';
-import data from './offlineData';
-
-const reactDonutChartInnerRadius = 62.5;
-const reactDonutChartOuterRadius = 125;
-const rotateAngleToLookBetter = -270;
-const width = 350;
-const height = 350;
+import {
+  data,
+  height,
+  reactDonutChartInnerRadius,
+  reactDonutChartOuterRadius,
+  rotateAngleToLookBetter,
+  width,
+  qualityMapping,
+} from './offlineData';
 
 function ExerChart(props) {
   const index = props.index;
@@ -16,6 +18,7 @@ function ExerChart(props) {
   const [repetitions, setRepetitions] = useState();
   const [sets, setSets] = useState({ done: 0, total: 0 });
   const [type, setType] = useState('-');
+  const [quality, setQuality] = useState('Could be better');
 
   useEffect(() => {
     setRepetitions(data);
@@ -26,19 +29,31 @@ function ExerChart(props) {
   useEffect(() => {
     setKey(incrementableKey + 1);
     setRepetitions(data);
-    const graphStats = _preprocessData();
 
+    const graphStats = _preprocessData();
     setSets(graphStats[0]);
     setRepetitions(graphStats[1]);
     setType(graphStats[2]);
+    setQuality(graphStats[3]);
   }, [stats]);
 
+  function _getQualityLabel(fract) {
+    const i = Math.floor(fract * 10.0);
+    let label = '-';
+    qualityMapping.forEach((step) => {
+      if (step.indexes.includes(i)) {
+        label = step.label;
+      }
+    });
+    return label;
+  }
+
   function _preprocessData() {
-    const data = stats[index];
-    const sets = { done: data.exercise.currentSet, total: data.sets };
-    const repsDone = Number.parseFloat(data.exercise.repetitionInSet);
-    const repsTotal = Number.parseFloat(data.reps);
-    const type = data.type;
+    const rawData = stats[index];
+    const sets = { done: rawData.exercise.currentSet, total: rawData.sets };
+    const repsDone = Number.parseFloat(rawData.exercise.repetitionInSet);
+    const repsTotal = Number.parseFloat(rawData.reps);
+    const type = rawData.type;
 
     // prepare now the list of 'repetitions' for the graph
     const reps = [];
@@ -50,8 +65,9 @@ function ExerChart(props) {
         value: fraction * 100,
       });
     }
+    const qual = _getQualityLabel(fraction);
 
-    return [sets, reps, type];
+    return [sets, reps, type, qual];
   }
 
   return (
@@ -62,16 +78,17 @@ function ExerChart(props) {
           y={height / 2 + 15}
           textAnchor="middle"
           dominantBaseline="middle"
-          fontSize={16}
+          fontSize={15}
         >
-          Type: {type}
+          {/* Type: {type} */}
+          {quality}
         </text>
         <text
           x={width / 2}
           y={height / 2 - 15}
           textAnchor="middle"
           dominantBaseline="middle"
-          fontSize={27}
+          fontSize={26}
         >
           {sets.done + '/' + sets.total}
         </text>

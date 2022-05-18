@@ -10,5 +10,36 @@ const data = [
   { id: 1, value: 10, fill: '#845EC2' },
   { id: 0, value: 10, fill: '#f00' },
 ];
+const reactDonutChartInnerRadius = 62.5;
+const reactDonutChartOuterRadius = 125;
+const rotateAngleToLookBetter = -270;
+const width = 350;
+const height = 350;
+const qualityMapping = [
+  {
+    indexes: [0, 1, 2, 3],
+    label: 'Keep going..',
+  },
+  {
+    indexes: [4, 5, 6],
+    label: 'Going well.',
+  },
+  {
+    indexes: [7, 8, 9],
+    label: 'Almost there.',
+  },
+  {
+    indexes: [10],
+    label: 'Well done!',
+  },
+];
 
-export default data;
+export {
+  data,
+  reactDonutChartInnerRadius,
+  reactDonutChartOuterRadius,
+  rotateAngleToLookBetter,
+  width,
+  height,
+  qualityMapping,
+};
