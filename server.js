@@ -18,9 +18,9 @@ app.use(
 app.use(cookieParser());
 
 // ------------------------------------------------------- DB
-const uri = process.env.ATLAS_DB_URI;
+//const uri = process.env.ATLAS_DB_URI;
 // uncomment below to make accessible from Heroku! --> using Heroku variables
-//const uri = process.env.MONGO_DB;
+const uri = process.env.MONGO_DB;
 
 mongoose.connect(uri);
 
@@ -33,13 +33,13 @@ connection.once('open', () => {
 const exercisesRouter = require('./routes/exercises');
 const patientsRouter = require('./routes/patients');
 const signupRouter = require('./routes/sign-up');
-const signinRouter = require('./routes/sign-in');
+const authRouter = require('./routes/authRoutes');
 const therapyRouter = require('./routes/therapy');
 
 app.use('/api/exercises', exercisesRouter);
 app.use('/api/patients', patientsRouter);
 app.use('/api/auth/sign-up', signupRouter);
-app.use('/api/auth', signinRouter);
+app.use('/api/auth', authRouter);
 app.use('/api/therapy', therapyRouter);
 
 // Heroku constant for locating frontend in production

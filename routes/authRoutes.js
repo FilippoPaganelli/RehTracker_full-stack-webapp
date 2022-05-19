@@ -66,4 +66,37 @@ router.route('/sign-in').post((req, res) => {
   });
 });
 
+// SIGNIN MOBILE
+router.route('/mobile/sign-in').post((req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+
+  Patient.findOne({ username: username }).exec(function (error, patient) {
+    if (error) {
+      res.json({ error: 'Error from database' });
+    } else if (!patient) {
+      res.json({ error: 'Wrong username or password' });
+    } else {
+      patient.comparePassword(password, function (matchError, isMatch) {
+        if (matchError) {
+          res.json({ error: 'Error from backend' });
+        } else if (!isMatch) {
+          res.json({ error: 'Wrong username or password' });
+        } else {
+          // password is correct
+          const token = jwt.sign(
+            { username: username },
+            process.env.SESSION_SECRET,
+            {
+              expiresIn: TOKEN_DURATION,
+            }
+          );
+          // sending the token for authentication
+          res.send(token);
+        }
+      });
+    }
+  });
+});
+
 module.exports = router;
