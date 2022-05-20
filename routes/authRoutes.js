@@ -73,15 +73,15 @@ router.route('/mobile/sign-in').post((req, res) => {
 
   Patient.findOne({ username: username }).exec(function (error, patient) {
     if (error) {
-      res.json({ error: 'Error from database' });
+      res.statusCode(500).json({ error: 'Error from database' });
     } else if (!patient) {
-      res.json({ error: 'Wrong username or password' });
+      res.statusCode(400).json({ error: 'Wrong username or password' });
     } else {
       patient.comparePassword(password, function (matchError, isMatch) {
         if (matchError) {
-          res.json({ error: 'Error from backend' });
+          res.statusCode(500).json({ error: 'Error from backend' });
         } else if (!isMatch) {
-          res.json({ error: 'Wrong username or password' });
+          res.statusCode(400).json({ error: 'Wrong username or password' });
         } else {
           // password is correct
           const token = jwt.sign(
