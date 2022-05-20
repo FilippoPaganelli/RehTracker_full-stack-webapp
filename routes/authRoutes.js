@@ -92,7 +92,7 @@ router.route('/mobile/sign-in').post((req, res) => {
             }
           );
           // sending the token for authentication
-          res.json({ token: token });
+          res.statusCode(200).json({ token: token });
         }
       });
     }
