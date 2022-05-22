@@ -8,6 +8,7 @@ function Statistics() {
   const { globalDate, setGlobalDate, stats, getStats } =
     useContext(AuthContext);
   const [selectedDate, setSelectedDate] = useState(globalDate);
+  const [update, setUpdate] = useState(0);
 
   function _buildGraphs() {
     let graphs = [];
@@ -27,8 +28,18 @@ function Statistics() {
     setGlobalDate(format(new Date(), 'yyyy-MM-dd'));
     getStats();
     setSelectedDate(globalDate);
-    // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    getStats();
+  }, [update]);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setUpdate(update + 1);
+    }, 60000);
+    return () => clearInterval(timer);
+  }, [update]);
 
   return (
     <div>
@@ -40,8 +51,8 @@ function Statistics() {
       ) : (
         <> */}
       <div style={textBasic}>
-        Here you can check your progress. Choose a date to see your exercises
-        statistics for a specific day.
+        Here, you can check your progress. Pick a date to see your exercises
+        statistics for that specific day.
       </div>
 
       <div id="date-graphs-wrapper" style={divDateGraphWrapper}>

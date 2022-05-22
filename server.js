@@ -18,9 +18,9 @@ app.use(
 app.use(cookieParser());
 
 // ------------------------------------------------------- DB
-//const uri = process.env.ATLAS_DB_URI;
-// uncomment below to make accessible from Heroku! --> using Heroku variables
-const uri = process.env.MONGO_DB;
+const uri = process.env.MONGO_DB
+  ? process.env.MONGO_DB
+  : process.env.ATLAS_DB_URI;
 
 mongoose.connect(uri);
 

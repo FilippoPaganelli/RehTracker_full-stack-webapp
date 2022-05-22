@@ -35,6 +35,7 @@ function AuthContextProvider(props) {
       { withCredentials: true }
     );
     setStats(statsData.data);
+    console.log('-auth: set stats');
   }
 
   useEffect(() => {

@@ -35,6 +35,8 @@ function ExerChart(props) {
     setRepetitions(graphStats[1]);
     setType(graphStats[2]);
     setQuality(graphStats[3]);
+
+    console.log('-exerchart: stats changed');
   }, [stats]);
 
   function _getQualityLabel(fract) {
