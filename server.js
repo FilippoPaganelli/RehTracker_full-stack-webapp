@@ -38,7 +38,7 @@ const therapyRouter = require('./routes/therapy');
 
 app.use('/api/exercises', exercisesRouter);
 app.use('/api/patients', patientsRouter);
-app.use('/api/auth/sign-up', signupRouter);
+app.use('/api/sign-up', signupRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/therapy', therapyRouter);
 

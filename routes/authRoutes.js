@@ -99,4 +99,20 @@ router.route('/mobile/sign-in').post((req, res) => {
   });
 });
 
+// SIGNEDIN MOBILE
+router.route('/mobile/signed-in').get((req, res) => {
+  try {
+    const token = req.body.token;
+    if (!token || token === '') {
+      res.json(false);
+    } else {
+      // timeout logic is inside of the token from its generation
+      jwt.verify(token, process.env.SESSION_SECRET);
+      res.json(true);
+    }
+  } catch (error) {
+    res.json(false);
+  }
+});
+
 module.exports = router;
