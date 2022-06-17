@@ -100,7 +100,7 @@ router.route('/mobile/sign-in').post((req, res) => {
 });
 
 // SIGNEDIN MOBILE
-router.route('/mobile/signed-in').get((req, res) => {
+router.route('/mobile/signed-in').post((req, res) => {
   try {
     const token = req.body.token;
     if (!token || token === '') {
