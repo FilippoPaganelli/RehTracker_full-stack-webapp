@@ -31,4 +31,4 @@ function authMobile(req, res, next) {
   }
 }
 
-module.exports = auth;
+module.exports = { auth, authMobile };
