@@ -1,58 +1,59 @@
 const router = require('express').Router();
 const auth = require('../middleware/authentication');
+const authMobile = require('../middleware/authentication');
 let Exercise = require('../models/exercise.model');
 let Patient = require('../models/patient.model');
 let TherapyPhase = require('../models/therapyPhase.model');
 const { DESCRIPTIONS } = require('../models/exercisesInfo');
 
 // RETRIEVE EX.S BY USERNAME & DATE MOBILE
-// router.route('/mobile/get').post(authMobile, (req, res) => {
-//   const username = req.body.username;
-//   const date = Date.parse(req.body.date);
+router.route('/mobile/get').post(authMobile, (req, res) => {
+  const username = req.body.username;
+  const date = Date.parse(req.body.date);
 
-//   TherapyPhase.find(
-//     {
-//       $and: [
-//         { startDate: { $lte: date } },
-//         { endDate: { $gte: date } },
-//         { username: username },
-//       ],
-//     },
-//     (err, therapy) => {
-//       if (err) {
-//         res.json({ error: err });
-//       } else {
-//         if (therapy == null || therapy.length == 0) {
-//           res.json({ error: 'No therapy found' });
-//         } else {
-//           const types = therapy[0].exerciseTypes;
-//           const stats = DESCRIPTIONS.filter((el) => types.includes(el.type));
-//           // sorting them from type '1' growing
-//           stats.sort((first, second) => (first.type <= second.type ? -1 : 1));
-//           const stringId = String(therapy[0]._id);
+  TherapyPhase.find(
+    {
+      $and: [
+        { startDate: { $lte: date } },
+        { endDate: { $gte: date } },
+        { username: username },
+      ],
+    },
+    (err, therapy) => {
+      if (err) {
+        res.json({ error: err });
+      } else {
+        if (therapy == null || therapy.length == 0) {
+          res.json({ error: 'No therapy found' });
+        } else {
+          const types = therapy[0].exerciseTypes;
+          const stats = DESCRIPTIONS.filter((el) => types.includes(el.type));
+          // sorting them from type '1' growing
+          stats.sort((first, second) => (first.type <= second.type ? -1 : 1));
+          const stringId = String(therapy[0]._id);
 
-//           Exercise.find({ therapyId: stringId }, (err, exs) => {
-//             if (err) res.json({ error: err });
-//             else {
-//               if (exs == null || exs.length == 0) {
-//                 res.json(`No exercises found for therapy ${stringId}`);
-//               } else {
-//                 stats.forEach((el) => {
-//                   exs.forEach((ex) => {
-//                     if (el.type === ex.type) {
-//                       el.exercise = ex;
-//                     }
-//                   });
-//                 });
-//                 res.json(stats);
-//               }
-//             }
-//           });
-//         }
-//       }
-//     }
-//   );
-// });
+          Exercise.find({ therapyId: stringId }, (err, exs) => {
+            if (err) res.json({ error: err });
+            else {
+              if (exs == null || exs.length == 0) {
+                res.json(`No exercises found for therapy ${stringId}`);
+              } else {
+                stats.forEach((el) => {
+                  exs.forEach((ex) => {
+                    if (el.type === ex.type) {
+                      el.exercise = ex;
+                    }
+                  });
+                });
+                res.json(stats);
+              }
+            }
+          });
+        }
+      }
+    }
+  );
+});
 
 // RETRIEVE EX.S BY USERNAME & DATE
 router.route('/get').post(auth, (req, res) => {
