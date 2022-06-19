@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const auth = require('../middleware/authentication');
+const { auth, authMobile } = require('../middleware/authentication');
 let Exercise = require('../models/exercise.model');
 let Patient = require('../models/patient.model');
 let TherapyPhase = require('../models/therapyPhase.model');
