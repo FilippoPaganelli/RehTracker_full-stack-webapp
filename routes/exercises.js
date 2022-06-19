@@ -1,13 +1,12 @@
 const router = require('express').Router();
-const auth = require('../middleware/authentication');
-const authMobile = require('../middleware/authentication');
+const auths = require('../middleware/authentication');
 let Exercise = require('../models/exercise.model');
 let Patient = require('../models/patient.model');
 let TherapyPhase = require('../models/therapyPhase.model');
 const { DESCRIPTIONS } = require('../models/exercisesInfo');
 
 // RETRIEVE EX.S BY USERNAME & DATE MOBILE
-router.route('/mobile/get').post(authMobile, (req, res) => {
+router.route('/mobile/get').post(auths.authMobile, (req, res) => {
   const username = req.body.username;
   const date = Date.parse(req.body.date);
 
@@ -56,7 +55,7 @@ router.route('/mobile/get').post(authMobile, (req, res) => {
 });
 
 // RETRIEVE EX.S BY USERNAME & DATE
-router.route('/get').post(auth, (req, res) => {
+router.route('/get').post(auths.auth, (req, res) => {
   const username = req.body.username;
   const date = Date.parse(req.body.date);
 
@@ -105,7 +104,7 @@ router.route('/get').post(auth, (req, res) => {
 });
 
 // ADD ONE
-router.route('/').post(auth, (req, res) => {
+router.route('/').post(auths.auth, (req, res) => {
   const username = req.body.username;
   const timestamp = Date.parse(req.body.timestamp);
   const type = parseInt(req.body.type);
