@@ -27,7 +27,7 @@ function authMobile(req, res, next) {
     req.username = verified.username;
     next();
   } catch (error) {
-    res.status(401);
+    res.status(401).send();
   }
 }
 
