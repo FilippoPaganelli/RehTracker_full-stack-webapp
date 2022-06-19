@@ -1,5 +1,4 @@
 const router = require('express').Router();
-const bcrypt = require('bcrypt');
 const Patient = require('../models/patient.model');
 const { VALIDEXTYPES } = require('../models/exercisesInfo');
 let TherapyPhase = require('../models/therapyPhase.model');
