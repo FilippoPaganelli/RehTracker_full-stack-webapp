@@ -16,4 +16,19 @@ function auth(req, res, next) {
   }
 }
 
+function authMobile(req, res, next) {
+  try {
+    const token = req.body.token;
+
+    if (!token || token === '') return res.status(401);
+
+    const verified = jwt.verify(token, process.env.SESSION_SECRET);
+
+    req.username = verified.username;
+    next();
+  } catch (error) {
+    res.status(401);
+  }
+}
+
 module.exports = auth;
