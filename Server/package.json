@@ -1,0 +1,52 @@
+{
+	"name": "backend",
+	"version": "1.0.0",
+	"description": "",
+	"main": "dist/server.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"build": "tsc --build",
+		"dev": "tsc-watch --onSuccess \"yarn start\"",
+		"build:frontend": "cd frontend && npm run build",
+		"install-frontend": "cd frontend && npm install",
+		"heroku-postbuild": "npm run install-frontend && npm run build",
+		"start": "node dist/server.js"
+	},
+	"keywords": [],
+	"author": "Filippo Paganelli",
+	"license": "ISC",
+	"dependencies": {
+		"bcrypt": "^5.1.1",
+		"cookie-parser": "^1.4.6",
+		"cors": "^2.8.5",
+		"dotenv": "^16.0.0",
+		"express": "^4.17.7",
+		"express-session": "^1.17.3",
+		"jsonwebtoken": "^8.5.1",
+		"mongoose": "^7.5.1",
+		"nodemon": "^3.0.1",
+		"randomcolor": "^0.6.2",
+		"react-donut-chart": "^1.2.2",
+		"recharts": "^2.1.9"
+	},
+	"engines": {
+		"node": "20.6.1"
+	},
+	"devDependencies": {
+		"@types/bcrypt": "^5.0.0",
+		"@types/cookie-parser": "^1.4.4",
+		"@types/cors": "^2.8.14",
+		"@types/jsonwebtoken": "^9.0.2",
+		"@types/node": "^20.6.0",
+		"ts-loader": "^9.4.4",
+		"tsc-watch": "^6.0.4",
+		"typescript": "^5.2.2"
+	},
+	"nodemonConfig": {
+		"ext": "js",
+		"exec": "node dist/server/server.js",
+		"watch": [
+			"dist/server/server.js"
+		]
+	}
+}

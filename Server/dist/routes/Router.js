@@ -1,0 +1,22 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.router = void 0;
+const express_1 = require("express");
+const middleware_1 = require("../middleware");
+const _1 = require(".");
+exports.router = (0, express_1.Router)();
+const AUTH_PREFIX = '/api/auth';
+const EXERCISES_PREFIX = '/api/exercises';
+const PATIENTS_PREFIX = '/api/patients';
+const THERAPIES_PREFIX = '/api/therapy';
+exports.router.get(AUTH_PREFIX + '/signed-in', _1.signedIn);
+exports.router.get(AUTH_PREFIX + '/sign-out', _1.signOut);
+exports.router.post(AUTH_PREFIX + '/sign-in', _1.signIn);
+exports.router.post(AUTH_PREFIX + '/sign-up', _1.signUp);
+exports.router.post(AUTH_PREFIX + '/mobile/signed-in', _1.mobileSignedIn);
+exports.router.post(EXERCISES_PREFIX + '/mobile/get', middleware_1.authMobile, _1.mobileGetExercises);
+exports.router.post(EXERCISES_PREFIX + '/get', middleware_1.auth, _1.getExercises);
+exports.router.post(EXERCISES_PREFIX + '/', middleware_1.auth, _1.createExercise);
+exports.router.patch(EXERCISES_PREFIX + '/', middleware_1.auth, _1.updateExercise);
+exports.router.get(PATIENTS_PREFIX + '/', middleware_1.auth, _1.getPatients);
+//# sourceMappingURL=Router.js.map
