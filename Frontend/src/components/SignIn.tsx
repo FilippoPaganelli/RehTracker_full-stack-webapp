@@ -36,9 +36,9 @@ export const SignIn: React.FC = () => {
 	}
 
 	return (
-		<>
-			<h1>Sign in</h1>
-			<form onSubmit={SigninUser}>
+		<div className="flex justify-center align-middle h-100">
+			<form className="flex-col p-4 gap-4" onSubmit={SigninUser}>
+				<h1>Sign in</h1>
 				<input
 					value={username}
 					onChange={e => setUsername(e.target.value)}
@@ -55,6 +55,6 @@ export const SignIn: React.FC = () => {
 				<br />
 				<input type="submit" value="Sign In" />
 			</form>
-		</>
+		</div>
 	)
 }

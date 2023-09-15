@@ -5,28 +5,26 @@ import React, { useContext } from 'react'
 import Logo from '../images/LogoTransparent.png'
 import { AuthContext } from '../contexts'
 
-const Navbar = () => {
+export const Navbar = () => {
 	const { signedIn } = useContext(AuthContext)
 	return (
 		<div>
-			<Nav style={{ marginTop: -10, marginLeft: -10, marginRight: -10 }}>
+			<Nav className="gap-8 p-4 flex">
 				<NavLink to="/">
-					<img className="Logo" height="75" width="225" src={Logo} alt="Logo" />
+					<img className="Logo pl-2" width="360" src={Logo} alt="Logo" />
 				</NavLink>
 				<Bars />
 
 				<NavMenu>
-					<NavLink to="/about">About Us</NavLink>
 					<NavLink to="/contact-us">Contact Us</NavLink>
 					{signedIn === true && <NavLink to="/stats">Statistics</NavLink>}
 				</NavMenu>
 
-				<NavMenu>
+				<NavMenu className="flex justify-end align-middle p-4">
 					{signedIn === false && (
-						<>
-							{/* <NavBtnLink to="/sign-up">Sign Up</NavBtnLink> */}
-							<NavBtnLink to="/sign-in">Sign In</NavBtnLink>
-						</>
+						<NavBtnLink className="px-4 py-2" to="/sign-in">
+							<span className="">Sign In</span>
+						</NavBtnLink>
 					)}
 					{signedIn === true && <NavBtnLink to="/sign-out">Sign Out</NavBtnLink>}
 				</NavMenu>
@@ -35,15 +33,12 @@ const Navbar = () => {
 	)
 }
 
-export default Navbar
-
 export const Nav = styled.nav`
 	background-image: linear-gradient(to bottom right, #06d6a0, #06acd6, #437fce, #845ec2);
 	height: 100px;
 	display: flex;
 	justify-content: space-between;
-	padding: 0.5rem calc((100vw - 1900px) / 2);
-	z-index: 10;
+	// padding: 0.5rem calc((100vw - 1900px) / 2);
 	justify-content: flex-start;
 `
 
@@ -52,7 +47,7 @@ export const NavLink = styled(Link)`
 	display: flex;
 	align-items: center;
 	text-decoration: none;
-	padding: 0 1rem;
+	// padding: 0 1rem;
 	height: 100%;
 	cursor: pointer;
 
@@ -91,7 +86,7 @@ export const NavMenu = styled.div`
 export const NavBtn = styled.nav`
 	display: flex;
 	align-items: center;
-	margin-right: 20px;
+	// margin-right: 20px;
 	justify-content: flex-end;
 	width: 100vw;
 
@@ -101,9 +96,9 @@ export const NavBtn = styled.nav`
 `
 
 export const NavBtnLink = styled(Link)`
-	border-radius: 4px;
-	background: #256ce1;
-	padding: 10px 22px;
+	border-radius: 10px;
+	// background: #256ce1;
+	// padding: 10px 22px;
 	color: #fff;
 	outline: none;
 	border: none;

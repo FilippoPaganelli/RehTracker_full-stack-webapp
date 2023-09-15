@@ -39,6 +39,9 @@ export const AuthContextProvider: React.FC<{ children?: React.ReactNode }> = pro
 		const signedInRes = await axios.get(API_URL + '/api/auth/signed-in', {
 			withCredentials: true,
 		})
+
+		console.log(signedInRes)
+
 		if (!fromSignOut && prevSignedIn && !signedInRes.data) {
 			alert('Authorisation timeout, please sign in again...')
 		}
@@ -54,6 +57,9 @@ export const AuthContextProvider: React.FC<{ children?: React.ReactNode }> = pro
 			},
 			{ withCredentials: true }
 		)
+
+		alert(statsData)
+
 		setStats(statsData.data)
 	}
 
