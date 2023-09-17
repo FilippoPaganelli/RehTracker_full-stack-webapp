@@ -1,13 +1,20 @@
 {
-	"name": "backend",
+	"name": "rehtracker",
 	"version": "1.0.0",
-	"description": "",
-	"main": "server.js",
+	"private": true,
+	"main": "/Server/dist/server.js",
+	"workspaces": [
+		"./**/*"
+	],
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"build": "cd Frontend && npm run build",
-		"install-frontend": "cd Frontend && npm install",
-		"heroku-postbuild": "npm run install-frontend && npm run build"
+		"install-backend": "yarn workspace @rehtracker/backend install",
+		"install-frontend": "yarn workspace @rehtracker/frontend install",
+		"install-all": "yarn install-backend && yarn install-frontend",
+		"build-backend": "yarn workspace @rehtracker/backend build",
+		"build-frontend": "yarn workspace @rehtracker/frontend build",
+		"build-all": "yarn build-backend && yarn build-frontend",
+		"heroku-postbuild": "yarn install-all && yarn build-all"
 	},
 	"keywords": [],
 	"author": "Filippo Paganelli",

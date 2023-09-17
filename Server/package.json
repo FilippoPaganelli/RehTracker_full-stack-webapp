@@ -1,15 +1,13 @@
 {
-	"name": "backend",
+	"name": "@rehtracker/backend",
 	"version": "1.0.0",
 	"description": "",
+	"private": true,
 	"main": "dist/server.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
+		"test": "echo \"Error: no test specified for backend\" && exit 1",
 		"build": "tsc --build",
 		"dev": "tsc-watch --onSuccess \"yarn start\"",
-		"build:frontend": "cd frontend && npm run build",
-		"install-frontend": "cd frontend && npm install",
-		"heroku-postbuild": "npm run install-frontend && npm run build",
 		"start": "node dist/server.js"
 	},
 	"keywords": [],

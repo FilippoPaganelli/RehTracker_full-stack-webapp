@@ -29,7 +29,6 @@ export const ExerChart: React.FC<{ index: number }> = props => {
 	useEffect(() => {
 		setRepetitions(data)
 		setKey(incrementableKey + 1)
-		// eslint-disable-next-line
 	}, [])
 
 	useEffect(() => {
@@ -77,22 +76,6 @@ export const ExerChart: React.FC<{ index: number }> = props => {
 	}
 
 	interface piefix extends React.Component {}
-
-	const pie = Pie as any as {
-		new (): piefix
-	}
-
-	const pieProps: any = {
-		data: { repetitions },
-		dataKey: 'value',
-		animationDuration: 700,
-		outerRadius: { reactDonutChartOuterRadius },
-		innerRadius: { reactDonutChartInnerRadius },
-		startAngle: { rotateAngleToLookBetter },
-		cx: '50%',
-		cy: '50%',
-		fill: '#8884d8',
-	}
 
 	return (
 		<div>
