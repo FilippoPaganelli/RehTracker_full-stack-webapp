@@ -26,9 +26,6 @@
 	"engines": {
 		"node": "20.6.1"
 	},
-	"devDependencies": {
-		"ts-loader": "^9.4.4"
-	},
 	"prettier": {
 		"semi": false,
 		"useTabs": true,
