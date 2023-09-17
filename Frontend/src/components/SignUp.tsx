@@ -1,6 +1,5 @@
 import React from 'react'
 import { useState } from 'react'
-import axios from 'axios'
 
 export const SignUp: React.FC = () => {
 	const [username, setUsername] = useState('')
@@ -9,21 +8,21 @@ export const SignUp: React.FC = () => {
 	async function SigninUser(event: React.FormEvent) {
 		event.preventDefault()
 
-		axios
-			.post(`http://localhost:5000/api/sign-in`, {
-				username: username,
-				password: password,
-			})
-			.then(res => {
-				console.log(res.data)
-				if (res.data.token) {
-					console.log(res.data.token)
-					localStorage.setItem('token', res.data.token)
-					window.location.href = '/'
-				} else {
-					alert('Please, check your username/password combination!')
-				}
-			})
+		// axios
+		// 	.post(`http://localhost:5000/api/auth/sign-up`, {
+		// 		username: username,
+		// 		password: password,
+		// 	})
+		// 	.then(res => {
+		// 		console.log(res.data)
+		// 		if (res.data.token) {
+		// 			console.log(res.data.token)
+		// 			localStorage.setItem('token', res.data.token)
+		// 			window.location.href = '/'
+		// 		} else {
+		// 			alert('Please, check your username/password combination!')
+		// 		}
+		// 	})
 	}
 
 	return (
