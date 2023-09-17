@@ -1,7 +1,6 @@
 {
 	"name": "@rehtracker/backend",
 	"version": "1.0.0",
-	"description": "",
 	"private": true,
 	"main": "dist/server.js",
 	"scripts": {
@@ -10,7 +9,6 @@
 		"dev": "tsc-watch --onSuccess \"yarn start\"",
 		"start": "node dist/server.js"
 	},
-	"keywords": [],
 	"author": "Filippo Paganelli",
 	"license": "ISC",
 	"dependencies": {
@@ -44,9 +42,9 @@
 	},
 	"nodemonConfig": {
 		"ext": "js",
-		"exec": "node dist/server/server.js",
+		"exec": "node dist/server.js",
 		"watch": [
-			"dist/server/server.js"
+			"dist/server.js"
 		]
 	}
 }
