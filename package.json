@@ -2,9 +2,9 @@
 	"name": "rehtracker",
 	"version": "1.0.0",
 	"private": true,
-	"main": "/Server/dist/server.js",
+	"main": "/packages/Server/dist/server.js",
 	"workspaces": [
-		"./**/*"
+		"packages/*"
 	],
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
@@ -14,7 +14,7 @@
 		"build-backend": "yarn workspace @rehtracker/backend build",
 		"build-frontend": "yarn workspace @rehtracker/frontend build",
 		"build-all": "yarn build-backend && yarn build-frontend",
-		"start": "node ./Server/dist/server.js",
+		"start": "node ./packages/Server/dist/server.js",
 		"heroku-postbuild": "yarn install-all && yarn build-all"
 	},
 	"keywords": [],
