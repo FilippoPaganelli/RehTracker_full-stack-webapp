@@ -6,27 +6,32 @@ import Logo from '../images/LogoTransparent.png'
 import { AuthContext } from '../contexts'
 
 export const Navbar = () => {
-	const { signedIn } = useContext(AuthContext)
+	const { authStatus: signedIn } = useContext(AuthContext)
+
 	return (
 		<div>
-			<Nav className="gap-8 p-4 flex">
+			<Nav className="flex gap-8 p-4">
 				<NavLink to="/">
 					<img className="Logo pl-2" width="360" src={Logo} alt="Logo" />
 				</NavLink>
 				<Bars />
 
-				<NavMenu>
+				<NavMenu className="flex gap-8">
 					<NavLink to="/contact-us">Contact Us</NavLink>
-					{signedIn === true && <NavLink to="/stats">Statistics</NavLink>}
+					{signedIn.username && <NavLink to="/stats">Statistics</NavLink>}
 				</NavMenu>
 
 				<NavMenu className="flex justify-end align-middle p-4">
-					{signedIn === false && (
+					{!signedIn.username && (
 						<NavBtnLink className="px-4 py-2" to="/sign-in">
-							<span className="">Sign In</span>
+							<span>Sign In</span>
 						</NavBtnLink>
 					)}
-					{signedIn === true && <NavBtnLink to="/sign-out">Sign Out</NavBtnLink>}
+					{signedIn.username && (
+						<NavBtnLink className="px-4 py-2" to="/sign-out">
+							<span>Sign Out</span>
+						</NavBtnLink>
+					)}
 				</NavMenu>
 			</Nav>
 		</div>

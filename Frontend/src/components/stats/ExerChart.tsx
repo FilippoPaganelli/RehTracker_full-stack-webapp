@@ -76,28 +76,45 @@ export const ExerChart: React.FC<{ index: number }> = props => {
 		return [sets, reps, type, qual]
 	}
 
+	interface piefix extends React.Component {}
+
+	const pie = Pie as any as {
+		new (): piefix
+	}
+
+	const pieProps: any = {
+		data: { repetitions },
+		dataKey: 'value',
+		animationDuration: 700,
+		outerRadius: { reactDonutChartOuterRadius },
+		innerRadius: { reactDonutChartInnerRadius },
+		startAngle: { rotateAngleToLookBetter },
+		cx: '50%',
+		cy: '50%',
+		fill: '#8884d8',
+	}
+
 	return (
-		<>
+		<div>
 			<PieChart key={incrementableKey} width={width} height={height}>
 				<text x={width / 2} y={height / 2 + 15} textAnchor="middle" dominantBaseline="middle" fontSize={15}>
-					{/* Type: {type} */}
 					{quality}
 				</text>
 				<text x={width / 2} y={height / 2 - 15} textAnchor="middle" dominantBaseline="middle" fontSize={26}>
 					{sets.done + '/' + sets.total}
 				</text>
 				<Pie
-					animationDuration={700}
 					data={repetitions}
+					dataKey="value"
+					animationDuration={500}
 					outerRadius={reactDonutChartOuterRadius}
 					innerRadius={reactDonutChartInnerRadius}
 					startAngle={rotateAngleToLookBetter}
 					cx="50%"
 					cy="50%"
 					fill="#8884d8"
-					dataKey="value"
 				/>
 			</PieChart>
-		</>
+		</div>
 	)
 }

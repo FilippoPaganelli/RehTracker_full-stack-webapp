@@ -1,21 +1,34 @@
-import jwt from 'jsonwebtoken'
+import * as jwt from 'jsonwebtoken'
+import { logger } from '../../shared'
 import { Patient } from '../../models'
 
-const TOKEN_DURATION = '600s'
+declare module 'jsonwebtoken' {
+	export interface SignedInJwtPayload extends jwt.JwtPayload {
+		username: string | null
+	}
+}
+
+const TOKEN_DURATION = process.env.NODE_ENV === 'production' ? '600s' : '3600s'
 
 // SIGNEDIN
 export const signedIn = (req: any, res: any) => {
 	try {
-		const token = req.cookies.token
+		const token: string | undefined = req.cookies.token
 
 		if (!token || token === '' || !process.env.SESSION_SECRET) {
-			res.json(false)
+			res.json({ username: null })
 		} else {
-			jwt.verify(token, process.env.SESSION_SECRET)
-			res.json(true)
+			const verified = <jwt.SignedInJwtPayload>jwt.verify(token, process.env.SESSION_SECRET)
+
+			if (!verified.username) {
+				res.json({ username: null })
+			}
+
+			res.json({ username: verified.username })
 		}
 	} catch (error) {
-		res.json(false)
+		logger.error(error)
+		res.json({ username: null })
 	}
 }
 
@@ -53,6 +66,7 @@ export const signIn = async (req: any, res: any) => {
 	}
 }
 
+// SIGNUP
 export const signUp = async (req: any, res: any) => {
 	const username = req.body.username
 	const password = req.body.password
@@ -119,7 +133,6 @@ export const mobileSignedIn = (req: any, res: any) => {
 		if (!token || token === '') {
 			res.json(false)
 		} else {
-			// timeout logic is inside of the token from its generation
 			jwt.verify(token, process.env.SESSION_SECRET ?? '')
 			res.json(true)
 		}

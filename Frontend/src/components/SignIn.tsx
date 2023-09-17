@@ -1,38 +1,33 @@
-import React, { useContext } from 'react'
-import { useState } from 'react'
-import axios from 'axios'
-import { AuthContext, API_URL } from '../contexts/AuthContext'
+import React, { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { AuthContext, API_URL } from '../contexts/AuthContext'
 
 export const SignIn: React.FC = () => {
-	const { getSignedIn, setGlobalUsername } = useContext(AuthContext)
+	const { getAuthStatus: getSignedIn } = useContext(AuthContext)
 	const navigate = useNavigate()
-	const [username, setUsername] = useState('')
-	const [password, setPassword] = useState('')
+	const [username, setUsername] = useState<string>('')
+	const [password, setPassword] = useState<string>('')
 
-	async function SigninUser(event: React.FormEvent) {
+	function SigninUser(event: React.FormEvent) {
 		event.preventDefault()
 
-		try {
-			await axios
-				.post(API_URL + `/api/auth/sign-in`, {
-					username: username,
-					password: password,
-				})
-				.then(res => {
-					if (res.data.error) {
-						console.log('- server_err: ' + res.data.error)
-						alert('Please, check your username or password...')
-					} else {
-						console.log('Sign in correct')
-						getSignedIn(false)
-						setGlobalUsername(username)
-						navigate('/stats')
-					}
-				})
-		} catch (error) {
-			alert('Please, check your username or password...')
-		}
+		fetch(API_URL + `/api/auth/sign-in`, {
+			method: 'POST',
+			credentials: 'include',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({
+				username: username,
+				password: password,
+			}),
+		}).then(res => {
+			if (!res.ok) {
+				alert('Please, check your username or password...')
+				throw new Error(`${res.status} ${res.statusText}`)
+			} else {
+				getSignedIn(false)
+				navigate('/stats')
+			}
+		})
 	}
 
 	return (

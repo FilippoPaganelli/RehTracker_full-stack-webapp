@@ -1,52 +1,7 @@
 import { Exercise, Patient, TherapyPhase, ExerciseInfo } from '../../models'
 
 // RETRIEVE EX.S BY USERNAME & DATE MOBILE
-export const mobileGetExercises = (req: any, res: any) => {
-	const username = req.body.username
-	const date = Date.parse(req.body.date)
-
-	TherapyPhase.find(
-		{
-			$and: [{ startDate: { $lte: date } }, { endDate: { $gte: date } }, { username: username }],
-		},
-		(err: any, therapy: any) => {
-			if (err) {
-				res.json({ error: err })
-			} else {
-				if (therapy == null || therapy.length == 0) {
-					res.json({ error: 'No therapy found' })
-				} else {
-					const types = therapy[0].exerciseTypes
-					const stats = ExerciseInfo.DESCRIPTIONS.filter(el => types.includes(el.type))
-					// sorting them from type '1' growing
-					stats.sort((first, second) => (first.type <= second.type ? -1 : 1))
-					const stringId = String(therapy[0]._id)
-
-					Exercise.find({ therapyId: stringId }, (err: any, exs: any) => {
-						if (err) res.json({ error: err })
-						else {
-							if (exs == null || exs.length == 0) {
-								res.json(`No exercises found for therapy ${stringId}`)
-							} else {
-								stats.forEach((el: any) => {
-									exs.forEach((ex: { type: number }) => {
-										if (el.type === ex.type) {
-											el.exercise = ex
-										}
-									})
-								})
-								res.json(stats)
-							}
-						}
-					})
-				}
-			}
-		}
-	)
-}
-
-// RETRIEVE EX.S BY USERNAME & DATE
-export const getExercises = async (req: any, res: any) => {
+export const mobileGetExercises = async (req: any, res: any) => {
 	const username = req.body.username
 	const date = Date.parse(req.body.date)
 
@@ -54,9 +9,7 @@ export const getExercises = async (req: any, res: any) => {
 		$and: [{ startDate: { $lte: date } }, { endDate: { $gte: date } }, { username: username }],
 	})
 
-	console.log(therapies)
-
-	if (therapies === null || therapies.length == 0) {
+	if (therapies === null || therapies.length === 0) {
 		res.json({ error: 'No therapy found' })
 	} else {
 		const types = therapies[0].exerciseTypes
@@ -66,11 +19,12 @@ export const getExercises = async (req: any, res: any) => {
 		const stringId = String(therapies[0]._id)
 
 		const exercises = await Exercise.find({ therapyId: stringId })
-		if (exercises === null || exercises.length == 0) {
+
+		if (exercises === null || exercises.length === 0) {
 			res.json(`No exercises found for therapy ${stringId}`)
 		} else {
 			stats.forEach((el: any) => {
-				exercises.forEach((ex: any) => {
+				exercises.forEach((ex: { type: number }) => {
 					if (el.type === ex.type) {
 						el.exercise = ex
 					}
@@ -78,6 +32,45 @@ export const getExercises = async (req: any, res: any) => {
 			})
 			res.json(stats)
 		}
+	}
+}
+
+// RETRIEVE EX.S BY USERNAME & DATE
+export const getExercises = async (req: any, res: any) => {
+	const username = req.body.username as string
+	const date = new Date(req.body.date as string)
+
+	try {
+		const therapies = await TherapyPhase.find({
+			$and: [{ startDate: { $lte: date } }, { endDate: { $gte: date } }, { username: username }],
+		})
+
+		if (therapies === null || therapies.length === 0) {
+			res.json({ error: 'No therapy found' })
+		} else {
+			const types = therapies[0].exerciseTypes
+			const stats = ExerciseInfo.DESCRIPTIONS.filter(el => types.includes(el.type))
+			// sorting them from type '1' growing
+			stats.sort((first, second) => (first.type <= second.type ? -1 : 1))
+			const stringId = String(therapies[0]._id)
+
+			const exercises = await Exercise.find({ therapyId: stringId })
+
+			if (exercises === null || exercises.length === 0) {
+				res.json(`No exercises found for therapy ${stringId}`)
+			} else {
+				stats.forEach((el: any) => {
+					exercises.forEach((ex: any) => {
+						if (el.type === ex.type) {
+							el.exercise = ex
+						}
+					})
+				})
+				res.json(stats)
+			}
+		}
+	} catch (error) {
+		res.json({ error: 'No therapy found' })
 	}
 }
 

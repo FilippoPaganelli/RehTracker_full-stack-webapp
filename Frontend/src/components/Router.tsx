@@ -4,7 +4,8 @@ import React, { useContext } from 'react'
 import { AuthContext } from '../contexts'
 
 export const Router: React.FC = () => {
-	const { signedIn } = useContext(AuthContext)
+	const { authStatus: signedIn } = useContext(AuthContext)
+
 	return (
 		<>
 			<BrowserRouter>
@@ -12,14 +13,14 @@ export const Router: React.FC = () => {
 				<Routes>
 					<Route path="*" element={<Home />} />
 					<Route path="/" element={<Home />} />
-					{signedIn === false ? (
-						<>
-							<Route path="/sign-in" element={<SignIn />} />{' '}
-						</>
-					) : (
+					{signedIn.username ? (
 						<>
 							<Route path="/stats" element={<Statistics />} />
 							<Route path="/sign-out" element={<SignOutBtn />} />
+						</>
+					) : (
+						<>
+							<Route path="/sign-in" element={<SignIn />} />
 						</>
 					)}
 				</Routes>

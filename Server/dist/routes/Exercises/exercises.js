@@ -2,56 +2,13 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateExercise = exports.createExercise = exports.getExercises = exports.mobileGetExercises = void 0;
 const models_1 = require("../../models");
-const mobileGetExercises = (req, res) => {
-    const username = req.body.username;
-    const date = Date.parse(req.body.date);
-    models_1.TherapyPhase.find({
-        $and: [{ startDate: { $lte: date } }, { endDate: { $gte: date } }, { username: username }],
-    }, (err, therapy) => {
-        if (err) {
-            res.json({ error: err });
-        }
-        else {
-            if (therapy == null || therapy.length == 0) {
-                res.json({ error: 'No therapy found' });
-            }
-            else {
-                const types = therapy[0].exerciseTypes;
-                const stats = models_1.ExerciseInfo.DESCRIPTIONS.filter(el => types.includes(el.type));
-                stats.sort((first, second) => (first.type <= second.type ? -1 : 1));
-                const stringId = String(therapy[0]._id);
-                models_1.Exercise.find({ therapyId: stringId }, (err, exs) => {
-                    if (err)
-                        res.json({ error: err });
-                    else {
-                        if (exs == null || exs.length == 0) {
-                            res.json(`No exercises found for therapy ${stringId}`);
-                        }
-                        else {
-                            stats.forEach((el) => {
-                                exs.forEach((ex) => {
-                                    if (el.type === ex.type) {
-                                        el.exercise = ex;
-                                    }
-                                });
-                            });
-                            res.json(stats);
-                        }
-                    }
-                });
-            }
-        }
-    });
-};
-exports.mobileGetExercises = mobileGetExercises;
-const getExercises = async (req, res) => {
+const mobileGetExercises = async (req, res) => {
     const username = req.body.username;
     const date = Date.parse(req.body.date);
     const therapies = await models_1.TherapyPhase.find({
         $and: [{ startDate: { $lte: date } }, { endDate: { $gte: date } }, { username: username }],
     });
-    console.log(therapies);
-    if (therapies === null || therapies.length == 0) {
+    if (therapies === null || therapies.length === 0) {
         res.json({ error: 'No therapy found' });
     }
     else {
@@ -60,7 +17,7 @@ const getExercises = async (req, res) => {
         stats.sort((first, second) => (first.type <= second.type ? -1 : 1));
         const stringId = String(therapies[0]._id);
         const exercises = await models_1.Exercise.find({ therapyId: stringId });
-        if (exercises === null || exercises.length == 0) {
+        if (exercises === null || exercises.length === 0) {
             res.json(`No exercises found for therapy ${stringId}`);
         }
         else {
@@ -73,6 +30,42 @@ const getExercises = async (req, res) => {
             });
             res.json(stats);
         }
+    }
+};
+exports.mobileGetExercises = mobileGetExercises;
+const getExercises = async (req, res) => {
+    const username = req.body.username;
+    const date = new Date(req.body.date);
+    try {
+        const therapies = await models_1.TherapyPhase.find({
+            $and: [{ startDate: { $lte: date } }, { endDate: { $gte: date } }, { username: username }],
+        });
+        if (therapies === null || therapies.length === 0) {
+            res.json({ error: 'No therapy found' });
+        }
+        else {
+            const types = therapies[0].exerciseTypes;
+            const stats = models_1.ExerciseInfo.DESCRIPTIONS.filter(el => types.includes(el.type));
+            stats.sort((first, second) => (first.type <= second.type ? -1 : 1));
+            const stringId = String(therapies[0]._id);
+            const exercises = await models_1.Exercise.find({ therapyId: stringId });
+            if (exercises === null || exercises.length === 0) {
+                res.json(`No exercises found for therapy ${stringId}`);
+            }
+            else {
+                stats.forEach((el) => {
+                    exercises.forEach((ex) => {
+                        if (el.type === ex.type) {
+                            el.exercise = ex;
+                        }
+                    });
+                });
+                res.json(stats);
+            }
+        }
+    }
+    catch (error) {
+        res.json({ error: 'No therapy found' });
     }
 };
 exports.getExercises = getExercises;
