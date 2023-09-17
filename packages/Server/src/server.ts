@@ -34,9 +34,8 @@ mongoose.connection.once('open', () => {
 
 app.use(router)
 
-// Heroku constant for locating frontend in production
 if (process.env.NODE_ENV === 'production') {
-	app.use(express.static('frontend/build'))
+	app.use(express.static('../../Frontend/build'))
 }
 
 // listening
