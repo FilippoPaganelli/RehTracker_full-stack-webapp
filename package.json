@@ -14,6 +14,7 @@
 		"build-backend": "yarn workspace @rehtracker/backend build",
 		"build-frontend": "yarn workspace @rehtracker/frontend build",
 		"build-all": "yarn build-backend && yarn build-frontend",
+		"start": "node ./Server/dist/server.js",
 		"heroku-postbuild": "yarn install-all && yarn build-all"
 	},
 	"keywords": [],
