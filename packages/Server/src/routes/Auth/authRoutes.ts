@@ -97,33 +97,30 @@ export const signUp = async (req: any, res: any) => {
 }
 
 // SIGNIN MOBILE
-// router.route('/mobile/sign-in').post((req, res) => {
-// 	const username = req.body.username
-// 	const password = req.body.password
+export const mobileSignIn = async (req: any, res: any) => {
+	const username = req.body.username as string
+	const password = req.body.password as string
 
-// 	Patient.findOne({ username: username }).exec(function (error, patient) {
-// 		if (error) {
-// 			res.status(500).json({ error: 'Error from database' })
-// 		} else if (!patient) {
-// 			res.status(400).json({ error: 'Wrong username or password' })
-// 		} else {
-// 			patient.comparePassword(password, function (matchError, isMatch) {
-// 				if (matchError) {
-// 					res.status(500).json({ error: 'Error from backend' })
-// 				} else if (!isMatch) {
-// 					res.status(400).json({ error: 'Wrong username or password' })
-// 				} else {
-// 					// password is correct
-// 					const token = jwt.sign({ username: username }, process.env.SESSION_SECRET, {
-// 						expiresIn: TOKEN_DURATION,
-// 					})
-// 					// sending the token for authentication
-// 					res.status(200).json({ token: token })
-// 				}
-// 			})
-// 		}
-// 	})
-// })
+	const patient = await Patient.findOne({ username: username })
+
+	if (!patient) {
+		res.json({ error: 'Could not find a patient' })
+	} else {
+		patient.comparePassword(password, (error, isMatch) => {
+			if (!isMatch) {
+				res.json({ error: 'Wrong username or password' })
+			} else {
+				// password is correct
+				const token = jwt.sign({ username: username }, process.env.SESSION_SECRET ?? '', {
+					expiresIn: TOKEN_DURATION,
+				})
+
+				// sending the token for authentication
+				res.json({ token })
+			}
+		})
+	}
+}
 
 // SIGNEDIN MOBILE
 export const mobileSignedIn = (req: any, res: any) => {

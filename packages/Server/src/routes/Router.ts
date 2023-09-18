@@ -6,6 +6,7 @@ import {
 	getPatients,
 	mobileGetExercises,
 	mobileSignedIn,
+	mobileSignIn,
 	signIn,
 	signOut,
 	signUp,
@@ -18,12 +19,13 @@ export const router = Router()
 const AUTH_PREFIX = '/api/auth'
 const EXERCISES_PREFIX = '/api/exercises'
 const PATIENTS_PREFIX = '/api/patients'
-const THERAPIES_PREFIX = '/api/therapy'
+// const THERAPIES_PREFIX = '/api/therapy'
 
 // auth
 router.get(AUTH_PREFIX + '/signed-in', signedIn)
 router.get(AUTH_PREFIX + '/sign-out', signOut)
 router.post(AUTH_PREFIX + '/sign-in', signIn)
+router.post(AUTH_PREFIX + '/mobile/sign-in', mobileSignIn)
 router.post(AUTH_PREFIX + '/sign-up', signUp)
 router.post(AUTH_PREFIX + '/mobile/signed-in', mobileSignedIn)
 
