@@ -1,32 +1,102 @@
 {
-  "name": "backend",
-  "version": "1.0.0",
-  "description": "",
-  "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "cd frontend && npm run build",
-    "install-frontend": "cd frontend && npm install",
-    "heroku-postbuild": "npm run install-frontend && npm run build",
-    "start": "node server.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "bcrypt": "^5.0.1",
-    "cookie-parser": "^1.4.6",
-    "cors": "^2.8.5",
-    "dotenv": "^16.0.0",
-    "express": "^4.17.3",
-    "express-session": "^1.17.2",
-    "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.2.8",
-    "randomcolor": "^0.6.2",
-    "react-donut-chart": "^1.2.2",
-    "recharts": "^2.1.9"
-  },
-  "engines": {
-    "node": "16.14.2"
-  }
+	"name": "rehtracker",
+	"version": "1.0.0",
+	"private": true,
+	"main": "/packages/Server/dist/server.js",
+	"workspaces": [
+		"packages/*"
+	],
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"install-backend": "yarn workspace @rehtracker/backend install",
+		"install-frontend": "yarn workspace @rehtracker/frontend install",
+		"install-all": "yarn install-backend && yarn install-frontend",
+		"build-backend": "yarn workspace @rehtracker/backend build",
+		"build-frontend": "yarn workspace @rehtracker/frontend build",
+		"build-all": "yarn build-backend && yarn build-frontend",
+		"start": "node ./packages/Server/dist/server.js",
+		"heroku-postbuild": "yarn install-all && yarn build-all"
+	},
+	"dependencies": {
+		"babel": "^6.23.0",
+		"bcrypt": "^5.1.1",
+		"cookie-parser": "^1.4.6",
+		"cors": "^2.8.5",
+		"dotenv": "^16.0.0",
+		"express": "^4.17.7",
+		"express-session": "^1.17.3",
+		"jsonwebtoken": "^8.5.1",
+		"mongoose": "^7.5.1",
+		"nodemon": "^3.0.1",
+		"pino": "^8.15.1",
+		"typescript": "^5.2.2",
+		"date-fns": "^2.30.0",
+		"react": "^18.2.0",
+		"react-day-picker": "^8.8.2",
+		"react-dom": "^18.2.0",
+		"react-icons": "^4.11.0",
+		"react-router-dom": "^6.16.0",
+		"react-scripts": "^5.0.1",
+		"recharts": "^2.8.0",
+		"styled-components": "^6.0.8",
+		"web-vitals": "^3.4.0",
+		"@types/bcrypt": "^5.0.0",
+		"@types/cookie-parser": "^1.4.4",
+		"@types/cors": "^2.8.14",
+		"@types/jsonwebtoken": "^9.0.2",
+		"@types/node": "^20.6.0",
+		"pino-pretty": "^10.2.0",
+		"ts-loader": "^9.4.4",
+		"tsc-watch": "^6.0.4"
+	},
+	"devDependencies": {
+		"@types/bcrypt": "^5.0.0",
+		"@types/cookie-parser": "^1.4.4",
+		"@types/cors": "^2.8.14",
+		"@types/jsonwebtoken": "^9.0.2",
+		"@types/node": "^20.6.0",
+		"pino-pretty": "^10.2.0",
+		"ts-loader": "^9.4.4",
+		"tsc-watch": "^6.0.4"
+	},
+	"author": "Filippo Paganelli",
+	"license": "ISC",
+	"engines": {
+		"node": "20.6.1"
+	},
+	"prettier": {
+		"semi": false,
+		"useTabs": true,
+		"tabWidth": 4,
+		"singleQuote": true,
+		"trailingComma": "es5",
+		"proseWrap": "always",
+		"bracketSameLine": true,
+		"bracketSpacing": true,
+		"arrowParens": "avoid",
+		"printWidth": 120,
+		"overrides": [
+			{
+				"files": "*.{yml,yaml,md,sh}",
+				"options": {
+					"useTabs": false,
+					"tabWidth": 2
+				}
+			},
+			{
+				"files": "*.json",
+				"options": {
+					"singleQuote": false
+				}
+			},
+			{
+				"files": "*.md",
+				"options": {
+					"printWidth": 80,
+					"useTabs": false,
+					"tabWidth": 2
+				}
+			}
+		]
+	}
 }

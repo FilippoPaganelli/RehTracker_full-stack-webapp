@@ -1,0 +1,25 @@
+{
+	"compilerOptions": {
+		"baseUrl": ".",
+		"incremental": true,
+		"composite": true,
+		"sourceMap": true,
+		"module": "CommonJS",
+		"target": "ES2020",
+		"jsx": "react",
+		"allowJs": false,
+		"declarationMap": true,
+		"declaration": true,
+		"removeComments": true,
+		"strict": true,
+		"allowUnreachableCode": false,
+		"experimentalDecorators": true,
+		"noImplicitOverride": true,
+		"noFallthroughCasesInSwitch": true,
+		"allowSyntheticDefaultImports": true,
+		"esModuleInterop": true,
+		"moduleResolution": "node",
+		"noImplicitAny": true,
+		"skipLibCheck": true
+	}
+}
