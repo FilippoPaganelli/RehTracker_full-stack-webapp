@@ -1,1 +1,1 @@
-web: yarn start
+web: node ./packages/Server/dist/server.js
