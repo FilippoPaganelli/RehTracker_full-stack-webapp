@@ -3,9 +3,12 @@ import cors from 'cors'
 import mongoose from 'mongoose'
 import cookieParser from 'cookie-parser'
 import { router } from './routes/Router'
+import { logger } from './shared'
+import path from 'path'
 require('dotenv').config()
 
 const PORT = process.env.PORT || 5000
+
 const app = express()
 
 app.use(express.json())
@@ -18,27 +21,26 @@ app.use(
 app.use(cookieParser())
 
 // ------------------------------------------------------- DB
-const uri = process.env.MONGO_DB ?? process.env.ATLAS_DB_URI ?? ''
+const databaseUrl = process.env.MONGO_DB || ''
 
 try {
-	mongoose.connect(uri)
+	mongoose.connect(databaseUrl)
+	mongoose.connection.once('open', () => {
+		logger.info('-database: connected successfully')
+	})
 } catch (error) {
-	console.log(error)
+	logger.error(error, 'Error on mongoose connection')
 }
 
-mongoose.connection.once('open', () => {
-	console.log('-DB: connected successfully')
-})
-
-// ------------------------------------------------------- routes
+// ------------------------------------------------------- routes & frontend hosting
 
 app.use(router)
 
 if (process.env.NODE_ENV === 'production') {
-	app.use(express.static('../../Frontend/build'))
+	app.use(express.static(path.join(__dirname, '../../Frontend/build')))
 }
 
 // listening
 app.listen(PORT, () => {
-	console.log(`-server: listening on port ${PORT}`)
+	logger.info(`-server: listening on port ${PORT}`)
 })
