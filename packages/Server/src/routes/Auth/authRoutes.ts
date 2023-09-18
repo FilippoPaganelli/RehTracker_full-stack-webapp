@@ -51,11 +51,11 @@ export const signIn = async (req: any, res: any) => {
 		res.json({ error: 'Could not find a patient' })
 	} else {
 		patient.comparePassword(password, (error, isMatch) => {
-			if (!isMatch) {
+			if (!isMatch || !process.env.SESSION_SECRET) {
 				res.json({ error: 'Wrong username or password' })
 			} else {
 				// password is correct
-				const token = jwt.sign({ username: username }, process.env.SESSION_SECRET ?? '', {
+				const token = jwt.sign({ username: username }, process.env.SESSION_SECRET, {
 					expiresIn: TOKEN_DURATION,
 				})
 
@@ -107,11 +107,11 @@ export const mobileSignIn = async (req: any, res: any) => {
 		res.json({ error: 'Could not find a patient' })
 	} else {
 		patient.comparePassword(password, (error, isMatch) => {
-			if (!isMatch) {
+			if (!isMatch || !process.env.SESSION_SECRET) {
 				res.json({ error: 'Wrong username or password' })
 			} else {
 				// password is correct
-				const token = jwt.sign({ username: username }, process.env.SESSION_SECRET ?? '', {
+				const token = jwt.sign({ username: username }, process.env.SESSION_SECRET, {
 					expiresIn: TOKEN_DURATION,
 				})
 
@@ -125,12 +125,17 @@ export const mobileSignIn = async (req: any, res: any) => {
 // SIGNEDIN MOBILE
 export const mobileSignedIn = (req: any, res: any) => {
 	try {
-		const token = req.body.token
+		const token: string | undefined = req.body.token
 
-		if (!token || token === '') {
+		if (!token || token === '' || !process.env.SESSION_SECRET) {
 			res.json(false)
 		} else {
-			jwt.verify(token, process.env.SESSION_SECRET ?? '')
+			const verified = <jwt.SignedInJwtPayload>jwt.verify(token, process.env.SESSION_SECRET)
+
+			if (!verified.username) {
+				res.json(false)
+			}
+
 			res.json(true)
 		}
 	} catch (error) {
