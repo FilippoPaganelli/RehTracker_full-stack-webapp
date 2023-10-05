@@ -17,19 +17,17 @@ export const Navbar = () => {
 				<Bars />
 
 				<NavMenu className="flex gap-8">
-					<NavLink to="/contact-us">Contact Us</NavLink>
 					{signedIn.username && <NavLink to="/stats">Statistics</NavLink>}
 				</NavMenu>
 
 				<NavMenu className="flex justify-end align-middle p-4">
-					{!signedIn.username && (
-						<NavBtnLink className="px-4 py-2" to="/sign-in">
-							<span>Sign In</span>
-						</NavBtnLink>
-					)}
-					{signedIn.username && (
+					{signedIn.username ? (
 						<NavBtnLink className="px-4 py-2" to="/sign-out">
 							<span>Sign Out</span>
+						</NavBtnLink>
+					) : (
+						<NavBtnLink className="px-4 py-2" to="/sign-in">
+							<span>Sign In</span>
 						</NavBtnLink>
 					)}
 				</NavMenu>
