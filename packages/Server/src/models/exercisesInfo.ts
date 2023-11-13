@@ -1,4 +1,4 @@
-const validExTypes = [1, 2]
+const validExTypes = [1, 2, 3, 4]
 
 const descriptions = [
 	{
@@ -10,6 +10,16 @@ const descriptions = [
 		type: 2,
 		sets: 5,
 		reps: 15,
+	},
+	{
+		type: 3,
+		sets: 1,
+		reps: 3,
+	},
+	{
+		type: 4,
+		sets: 1,
+		reps: 5,
 	},
 ]
 
